@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         resultTV.setText("OK we start!");
 
         try {
-            Uri uri = Uri.parse("content://com.example.jonathanmaldonado.w5d3_ex01.DataBase/genre");
+            Uri uri = Uri.parse("content://com.example.jonathanmaldonado.w5d3_ex01.DataBase/movie");
             ContentProviderClient contentProviderClient = getContentResolver().acquireContentProviderClient(uri);
             Cursor cursor = contentProviderClient.query(uri, null, null, null, null, null);
 
@@ -29,10 +29,23 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+            String newMessage="Start: \n";
+            while (cursor.moveToNext()){
 
+                newMessage +="Movie: \n";
+                long entryID =cursor.getLong(cursor.getColumnIndexOrThrow("_ID"));
+                String entryTitle=cursor.getString(cursor.getColumnIndexOrThrow("name"));
+                String entrydate=cursor.getString(cursor.getColumnIndexOrThrow("date"));
 
-            Log.d(TAG, "onCreate: URI --> " + uri + " REACHED PERFECT !!!!! ");
-            resultTV.setText(cursor.toString());
+                newMessage += "Note id: "+ entryID+ " Title: "+ entryTitle+ " Date "+entrydate+"\n";
+               // newMessage +=  "Title: "+ entryTitle+ " Date "+entrydate+"\n";
+            }
+
+            resultTV.setText("");
+            resultTV.setText(newMessage);
+
+            Log.d(TAG, "onCreate URI:" + uri + " ");
+           // resultTV.setText(cursor.toString());
         }
         catch (Exception e){
             resultTV.setText(e.toString());
